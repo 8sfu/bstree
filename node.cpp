@@ -37,20 +37,68 @@ bool Node::isLeaf(){
   return false;
 }
 
+Node* Node::getLeftMost(){
+  if(left == nullptr){
+    return this;
+  }else{
+    return left->getLeftMost();
+  }
+}
+
+Node* Node::getSuccessor(){
+  Node* successor = nullptr;
+  if(right == nullptr){
+    return nullptr;
+  }
+  successor = right->getLeftMost();
+  return successor;
+}
+
 void Node::addNode(Node* addNode){
-  if(addNode->getValue() > value){
+  if(addNode->getValue() < value){
     if(left == nullptr){
       left = addNode;
     }else{ 
       left->addNode(addNode);
     }
-  }else if(addNode->getValue() <= value){
+  }else if(addNode->getValue() >= value){
     if(right == nullptr){
       right = addNode;
     }else{
     right->addNode(addNode);
     }
   }
+}
+
+Node* Node::searchNode(int check, bool print){
+  if(value == check){
+    if(print){
+      cout << check << " is in this tree." << endl;
+    }
+    return this;
+  }else if(value > check){
+    if(left != nullptr){
+      return left->searchNode(check,print);
+    }else{
+      if(print){
+	cout << check << " is not in the tree." << endl;
+      }
+      return nullptr;
+    }
+  }else{
+    if(right != nullptr){
+      return right->searchNode(check,print);
+    }else{
+      if(print){
+	cout << check << " is not in the tree." << endl;
+      }
+      return nullptr;
+    }
+  }
+}
+
+void Node::deleteNode(int check){
+  
 }
 
 void Node::print(int depth){
@@ -85,34 +133,34 @@ void Node::printNotString(int depth,int state){
 
 void Node::printNice(string prev, int isLeft){
   if(isLeft == 0){
-    if(left != nullptr){
-      left->printNice(prev + "   ",0);
-    }
-    
-    cout << prev << " Γ " << value << endl;
     if(right != nullptr){
       right->printNice(prev + "|  ",1);
     }
-  }else if(isLeft == 1){
+    cout << prev << " L " << value << endl;
+    if(left != nullptr){
+      left->printNice(prev + "   ",0);
+    }
+  }
+  else if(isLeft == 1){
+    if(right != nullptr){
+      right->printNice(prev + "   ",1);
+    }
+    cout << prev << " Γ " << value << endl;
     if(left != nullptr){
       left->printNice(prev + "|  ",0);
     }
-    cout << prev << " L " << value << endl;
-    if(right != nullptr){
-      right->printNice(prev + "   ",1);
-    }  
   }
   if(isLeft == 2){
-    if(left != nullptr){
-      left->printNice(prev,0);
-    }
-    cout << prev << value << endl;
     if(right != nullptr){
       right->printNice(prev,1);
     }
+    cout << prev << value << endl;
+    if(left != nullptr){
+      left->printNice(prev,0);
+    }
   }
 }
-
+  
 Node::~Node(){
   delete[] left;
   delete[] right;

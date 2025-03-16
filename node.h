@@ -16,8 +16,12 @@ class Node {
   int getValue();
   Node* getLeft();
   Node* getRight();
-  
+  Node* getLeftMost();
+  Node* getSuccessor();
+
   void addNode(Node* addNode);
+  Node* searchNode(int check, bool print);
+  void deleteNode(int check);
   void print(int depth);
   void printNotString(int depth, int state);
   void printNice(string prev, int isLeft);
