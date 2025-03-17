@@ -22,6 +22,10 @@ int Node::getValue(){
   return value;
 }
 
+void Node::setValue(int setValue){
+  value = setValue;
+}
+
 Node* Node::getLeft(){
   return left;
 }
@@ -53,6 +57,7 @@ Node* Node::getSuccessor(){
   successor = right->getLeftMost();
   return successor;
 }
+
 
 void Node::addNode(Node* addNode){
   if(addNode->getValue() < value){
@@ -95,10 +100,6 @@ Node* Node::searchNode(int check, bool print){
       return nullptr;
     }
   }
-}
-
-void Node::deleteNode(int check){
-  
 }
 
 void Node::print(int depth){

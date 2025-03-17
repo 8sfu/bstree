@@ -5,44 +5,45 @@
 
 using namespace std;
 
-void delTree(Node* root,int check){
-  if(root->getValue() == check){
-    if(root->isLeaf()){
-      root = nullptr;
-    }else if(root->getRight() == nullptr){
-      root = root->getLeft();
-    }else if(root->getLeft() == nullptr){
-      root = root->getRight();
+void delNode(Node* node){
+  cout << node->getValue() << endl;
+    if(node->isLeaf()){
+      node = nullptr;
+      cout << "isleaf" << endl;
+    }else if(node->getRight() == nullptr){
+      node = node->getLeft();
+      cout << "hasleft" << endl;
+    }else if(node->getLeft() == nullptr){
+      node = node->getRight();
+      cout << "hasright" << endl;
+      cout << node->getValue() << endl;
+      node->printNice("   ",2);
     }else{
-      Node* newRoot = root->getSuccessor();
-      newRoot->setLeft(root->getLeft());
-      newRoot->setRight(root->getRight());
-      root = newRoot;
+      int value = node->getSuccessor()->getValue();
+      node->getSuccessor() = nullptr;
+      Node* successor = new Node(value);
+      successor->setLeft(node->getLeft());
+      successor->setRight(node->getRight());
+      node = successor;
+      
+      successor->printNice("   ",2);
     }
-  }else{
-    if(root->searchNode(check,false)){
-      cout << "Need 3 case deletion still." << endl;
-    }
-  }
 }
 
 int main(){
   Node* root = new Node(4);
 
-  Node* left = new Node(2);                                                                      
-  root->setLeft(left);                                                                            
-  
-  Node* leftleft = new Node(1);                                                                    
-  left->setLeft(leftleft);                                                                         
-  Node* leftright = new Node(3);                                                                   
-  left->setRight(leftright);                                                                       
-                                                                                                   
-  Node* right = new Node(6);                                                                       
-  root->setRight(right);                                                                          
-  
-  Node* rightleft = new Node(5);                                                                   
-  right->setLeft(rightleft);                                                                       
-  Node* rightright = new Node(7);                                                                  
+  Node* left = new Node(2);
+  root->setLeft(left);
+  Node* leftleft = new Node(1);
+  left->setLeft(leftleft);
+  Node* leftright = new Node(3);
+  left->setRight(leftright);
+  Node* right = new Node(6);
+  root->setRight(right);
+  Node* rightleft = new Node(5);
+  right->setLeft(rightleft);
+  Node* rightright = new Node(7);
   right->setRight(rightright);
   
   /*int treeSize = 1000;
@@ -64,16 +65,20 @@ int main(){
   root->printNice(prev,2);
   cout << endl << endl;
 
-  int check = 6;
+  int check = 4;
 
   root->searchNode(check,true);
   
   cout << "inorder successor of " << check << " is " 
        << root->searchNode(check,false)->getSuccessor()->getValue() << endl;
   
-  delTree(root,check);
+  
+  if(root->searchNode(check,false) != nullptr){
+    cout << "needtodel" << endl;
+    delNode(root->searchNode(check,false));
+  }
 
-  root->printNice("   ",2);
+  
   
   return 0;
 }
