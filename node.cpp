@@ -6,6 +6,7 @@ using namespace std;
 
 Node::Node(int setValue){
   value = setValue;
+  parent = nullptr;
   left = nullptr;
   right = nullptr;
 }
@@ -16,6 +17,10 @@ void Node::setLeft(Node* setLeft){
 
 void Node::setRight(Node* setRight){
   right = setRight;
+}
+
+void Node::setParent(Node* setParent){
+  parent = setParent;
 }
 
 int Node::getValue(){
@@ -34,8 +39,47 @@ Node* Node::getRight(){
   return right;
 }
 
+Node* Node::getParent(){
+  return parent;
+}
+
 bool Node::isLeaf(){
   if(left == nullptr && right == nullptr){
+    return true;
+  }
+  return false;
+}
+
+bool Node::hasLeftChild(){
+  if(left != nullptr){
+    return true;
+  }
+  return false;
+}
+
+bool Node::hasRightChild(){
+  if(right != nullptr){
+    return true;
+  }
+  return false;
+}
+
+bool Node::isRoot(){
+  if(parent == nullptr){
+    return true;
+  }
+  return false;
+}
+
+bool Node::isLeftChild(){
+  if(value < parent->getValue()){
+    return true;
+  }
+  return false;
+}
+
+bool Node::hasBothChildren(){
+  if(left != nullptr && right != nullptr){
     return true;
   }
   return false;
@@ -63,15 +107,43 @@ void Node::addNode(Node* addNode){
   if(addNode->getValue() < value){
     if(left == nullptr){
       left = addNode;
+      addNode->setParent(this);
     }else{ 
       left->addNode(addNode);
     }
   }else if(addNode->getValue() >= value){
     if(right == nullptr){
       right = addNode;
+      addNode->setParent(this);
     }else{
-    right->addNode(addNode);
+      right->addNode(addNode);
     }
+  }
+}
+
+void Node::deleteNode(){
+  if(this->isLeaf()){
+    if(this->isLeftChild()){
+      parent->setLeft(nullptr);
+    }else{
+      parent->setRight(nullptr);
+    }
+  }else if(this->hasLeftChild()){
+    if(this->isLeftChild()){
+      parent->setLeft(this->getLeft());
+    }else{
+      parent->setRight(this->getLeft());
+    }
+  }else if(this->hasRightChild()){
+    if(this->isLeftChild()){
+      parent->setLeft(this->getRight());
+    }else{
+      parent->setRight(this->getRight());
+    }
+  }else{
+    int placeholder = this->getSuccessor()->getValue();
+    value = placeholder;
+    this->getSuccessor()->deleteNode();
   }
 }
 
@@ -151,7 +223,7 @@ void Node::printNice(string prev, int isLeft){
       left->printNice(prev + "|  ",0);
     }
   }
-  if(isLeft == 2){
+   if(isLeft == 2){
     if(right != nullptr){
       right->printNice(prev,1);
     }
