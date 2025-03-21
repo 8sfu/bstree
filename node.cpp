@@ -28,17 +28,17 @@ int Node::getValue(){
 }
 
 void Node::setLeft(Node* left){
-    m_left = left;
-    if(left != nullptr){
-        left->setParent(this);
-    }
+  m_left = left;
+  if(left != nullptr){
+    left->setParent(this);
+  }
 }
 
 void Node::setRight(Node* right){
-    m_right = right;
-    if(right != nullptr){
-      right->setParent(this);
-    }
+  m_right = right;
+  if(right != nullptr){
+    right->setParent(this);
+  }
 }
 
 void Node::setParent(Node* parent){
@@ -78,7 +78,7 @@ bool Node::isLeftChild(){
 }
   
 Node::~Node(){
-    delete[] m_parent;
-    delete[] m_left;
-    delete[] m_right;
+  delete[] m_parent;
+  delete[] m_left;
+  delete[] m_right;
 }
