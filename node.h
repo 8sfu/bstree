@@ -5,39 +5,31 @@
 using namespace std;
 
 class Node {
-  int value;
-  Node* parent;
-  Node* left;
-  Node* right;
+  int m_value;
+  Node* m_parent;
+  Node* m_left;
+  Node* m_right;
  public:
-  Node(int setValue);
-  bool isLeaf();
+  Node(int value);
+  
+  //
+  bool hasBothChildren();
   bool hasLeftChild();
   bool hasRightChild();
-  bool isRoot();
   bool isLeftChild();
-  bool hasBothChildren();
-  void setLeft(Node* setLeft);
-  void setRight(Node* setRight);
-  void setParent(Node* setParent);
+  
+  //GETTERS AND SETTERS
   int getValue();
-  void setValue(int value);
   Node* getLeft();
   Node* getRight();
   Node* getParent();
-  Node* getLeftMost();
-  Node* getSuccessor();
-
-  void addNode(Node* addNode);
-  void deleteNode();
-  Node* searchNode(int check, bool print);
-  void deleteNode(int check);
-  void print(int depth);
-  void printNotString(int depth, int state);
-  void printNice(string prev, int isLeft);
+  
+  void setLeft(Node* left);
+  void setRight(Node* right);
+  void setParent(Node* parent);
+  void setValue(int value);
+  
   ~Node();
 };
-
-
 
 #endif
