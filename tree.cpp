@@ -129,8 +129,10 @@ void Tree::addNode(Node* node){
 }
 
 bool Tree::hasVal(int value){
-  if(searchSubTree(m_root,value) != nullptr){
-    return true;
+  if(m_root != nullptr){
+    if(searchSubTree(m_root,value) != nullptr){
+      return true;
+    }
   }
   return false;
 }
@@ -155,6 +157,10 @@ void Tree::printTree(){
     cout << "The tree is empty." << endl;
   }
   cout << endl;
+}
+
+void Tree::wipe(){
+  m_root = nullptr;
 }
 
 Tree::~Tree(){

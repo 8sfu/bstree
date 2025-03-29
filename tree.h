@@ -13,6 +13,7 @@ public:
   bool hasVal(int value);
   void deleteVal(int value);
   void printTree();
+  void wipe();
   ~Tree();
 };
 

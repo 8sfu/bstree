@@ -33,6 +33,8 @@
 #include <string>
 #include <cstring>
 #include <cmath>
+#include <vector>
+#include <fstream>
 #include "node.h"
 #include "tree.h"
 
@@ -67,34 +69,75 @@ int numFromChar(char* input){
   return num*pow(10,i-1);
 }
 
+vector<int>* getInputVec(){
+  int intput;
+  vector<int>* inputVec = new vector<int>();
+  cout << "Enter a list of space separated numbers." << endl;
+  while(cin.peek() != '\n'){
+    if(cin.peek() == ' '){
+      cin.ignore();
+      cin.clear();
+    }else{
+      cin >> intput;
+      if(intput >= 0 && intput < 1000){
+        inputVec->push_back(intput);
+      }else{
+        cout << intput << " is not a valid input." << endl;
+      }
+    }
+  }
+  cin.clear();
+  cin.ignore(1024,'\n');
+  return inputVec;
+}
+
+vector<int>* getFileVec(){
+  srand(time(NULL));
+  int intput;
+  vector<int>* fileVec = new vector<int>();
+  fstream f;
+  f.open("f.txt",fstream::in);
+  cout << "How many numbers would you like to pull from the file?" << endl;
+  intput = getIntput();
+  int fullArr[1000];
+  for(int i = 0; i < 999; i++){
+    f >> fullArr[i];
+  }
+  for(int i = 0; i < intput; i++){
+    fileVec->push_back(fullArr[rand()%999]);
+  }
+  return fileVec;
+}
+
+
 int main(){
   char* input = new char[200];
   int intput;
   Tree* tree = new Tree(nullptr);
 
-  cout << "Welcome to Binary Search Tree. This program currently lacks comments or";
+  cout << "Welcome to Binary Search Tree. This program currently lacks comments or ";
   cout << " compatibility with file input." << endl;
   
   while(true){
-    cout << "Would you like to add, search, delete, or print nodes to the tree or quit?";
-    cout << "(add) or (search) or (delete) or (print) or (quit)" << endl;
+    cout << "Would you like to add, search, delete, or print nodes to the tree or restart or quit? ";
+    cout << "(add) or (search) or (delete) or (print) or (restart) or (quit)" << endl;
     cin.getline(input,20);
     
     if(cmp(input,"add")){
-      cout << "Enter a list of space separated numbers to add to the tree." << endl;
-      cin.getline(input,200);
-      char* token;
-      int i = 0;
+      cout << "Would you like to add numbers manually or from a file? ";
+      cout << "(manual) or (file)" << endl;
+      cin.getline(input,20);
       
-      token = strtok(input," ");
-      while(token != NULL){
-	intput = numFromChar(token);
-	if(intput > 0 && intput < 1000){
-	  tree->addNode(new Node(intput));
-	}
-	i++;
-	token = strtok(NULL," ");
+      vector<int>* numbers;
+      if(cmp(input,"manual")){
+	numbers = getInputVec();
+      }else if(cmp(input,"file")){
+	numbers = getFileVec();
       }
+      for(int i = 0; i < numbers->size(); ++i){
+	tree->addNode(new Node((*numbers)[i]));
+      }
+      
     }else if(cmp(input,"search")){
       cout << "What number would you like to search for?" << endl;
       cout << "Enter numbers one at a time." << endl;
@@ -116,6 +159,8 @@ int main(){
       }
     }else if(cmp(input,"print")){
       tree->printTree();
+    }else if(cmp(input,"restart")){
+      tree->wipe();
     }else if(cmp(input,"quit")){
       return 0;
     }
