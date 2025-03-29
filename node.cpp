@@ -4,6 +4,8 @@
 
 using namespace std;
 
+//Self explanatory getters and setters hence the lack of comments. Apologies.
+
 Node::Node(int value){
   m_value = value;
   m_parent = nullptr;

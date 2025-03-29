@@ -10,12 +10,12 @@ Node* Tree::getRoot(){
 }
 
 void attachChild(Node* parent, Node* child){
-  if(child != nullptr){
+  if(child != nullptr){ //recursively add a child to a parents left or right side
     if(child->getValue() < parent->getValue()){
-      if(parent->getLeft() == nullptr){
+      if(parent->getLeft() == nullptr){ //if we have reached a root, attach the child
 	parent->setLeft(child);
 	child->setParent(parent);
-      }else{
+      }else{ //otherwise continue recursing
 	attachChild(parent->getLeft(),child);
       }
         }else{
@@ -29,27 +29,27 @@ void attachChild(Node* parent, Node* child){
   }
 }
 
-void print(Node* node, string prev, bool isLeft){
+void print(Node* node, string prev, bool isLeft){ //print syntax
   if(isLeft){
     if(node->getRight() != nullptr){
-      print(node->getRight(),prev+" | ",false);
+      print(node->getRight(),prev+" | ",false); //add a "|" in front of right children of a left node
     }
     cout << prev << " L " << node->getValue() << endl;
     if(node->getLeft() != nullptr){
-      print(node->getLeft(),prev+"   ",true);
+      print(node->getLeft(),prev+"   ",true); // " " for left children of a right node
     }
   }else{
     if(node->getRight() != nullptr){
-      print(node->getRight(),prev+"   ",false);
+      print(node->getRight(),prev+"   ",false); // " " for right children of a left node
     }
     cout << prev << " Γ " << node->getValue() << endl;
     if(node->getLeft() != nullptr){
-      print(node->getLeft(),prev+" | ",true);
+      print(node->getLeft(),prev+" | ",true); // " | " for left children of a left node
     } 
   }
 }
 
-Node* searchSubTree(Node* node, int value){
+Node* searchSubTree(Node* node, int value){ //recursively search subtrees to see if a value exists
   if(node->getValue() == value){
     return node;
   }else{
@@ -67,7 +67,7 @@ Node* searchSubTree(Node* node, int value){
   }
 }
 
-Node* leftmostChildOf(Node* node){
+Node* leftmostChildOf(Node* node){ //useful in finding successors
   if(node->getLeft() == nullptr){
     return node;
   }else{
@@ -75,11 +75,13 @@ Node* leftmostChildOf(Node* node){
   }
 }
 
-Node* successorOf(Node* node){
+Node* successorOf(Node* node){ //get the successor 
   if(node->getRight() == nullptr){
+    return nullptr;
     //We don't need to worry about proper inorder traversal yet.
-  }
+  }else{
   return leftmostChildOf(node->getRight());
+  }
 }
 
 Node* Tree::delFromTree(Node* node){
@@ -120,7 +122,7 @@ Node* Tree::delFromTree(Node* node){
   }
 }
 
-void Tree::addNode(Node* node){ 
+void Tree::addNode(Node* node){ //add nodes while considering the root case 
   if(m_root == nullptr){
     m_root = node;
   }else{
@@ -128,7 +130,7 @@ void Tree::addNode(Node* node){
   }
 }
 
-bool Tree::hasVal(int value){
+bool Tree::hasVal(int value){ //check for nodes while considering the root case
   if(m_root != nullptr){
     if(searchSubTree(m_root,value) != nullptr){
       return true;
@@ -137,13 +139,13 @@ bool Tree::hasVal(int value){
   return false;
 }
 
-void Tree::deleteVal(int value){
+void Tree::deleteVal(int value){ //delete nodes (root case)
   while(this->hasVal(value)){
     m_root = delFromTree(searchSubTree(m_root,value));
   }
 }
 
-void Tree::printTree(){
+void Tree::printTree(){ //print (root case)
   cout << endl;
   if(m_root != nullptr){
     if(m_root->getRight() != nullptr){
@@ -159,10 +161,10 @@ void Tree::printTree(){
   cout << endl;
 }
 
-void Tree::wipe(){
+void Tree::wipe(){ //wipe (root
   m_root = nullptr;
 }
 
-Tree::~Tree(){
+Tree::~Tree(){ //delete root
   delete[] m_root;
 }
