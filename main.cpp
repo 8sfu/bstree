@@ -94,7 +94,6 @@ vector<int>* getInputVec(){
 }
 
 vector<int>* getFileVec(){
-  srand(time(NULL));
   int intput; //intput keeps track of the total number of values to add to the tree
   vector<int>* fileVec = new vector<int>(); //filevec stores all values
   fstream f;
@@ -113,6 +112,7 @@ vector<int>* getFileVec(){
 
 
 int main(){
+  srand(time(NULL));
   char* input = new char[20]; //Cstring and int input vars
   int intput;
   Tree* tree = new Tree(nullptr); //Initialize new tree with no root
