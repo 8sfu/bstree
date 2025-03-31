@@ -61,6 +61,16 @@ int getIntput(){ //Bugfix for infinite loops created by char inputs where int wa
   return intput;
 }
 
+ int numFromChar(char* input){
+   int i = 0;
+   double num = 0.0;
+   while(input[i] != '\0'){
+     num += ((int)input[i]-48)*pow(10.0,-1*i); 
+     i++;
+   }
+   return num*pow(10,i-1);
+ }
+
 vector<int>* getInputVec(){
   int intput; //intput keeps track of new values to be added to the tree
   vector<int>* inputVec = new vector<int>(); //inputvec holds all values
@@ -121,14 +131,26 @@ int main(){
       
       vector<int>* numbers; //use vectors of numbers pulled from a file or manual input
       if(cmp(input,"manual")){
-	numbers = getInputVec();
+        cout << "Enter a list of space separated numbers to add to the tree." << endl;
+        cin.getline(input,200);
+        char* token;
+        int i = 0;
+       
+        token = strtok(input," ");
+        while(token != NULL){
+ 	  intput = numFromChar(token);
+ 	  if(intput > 0 && intput < 1000){
+ 	    tree->addNode(new Node(intput));
+ 	  }
+ 	  i++;
+ 	  token = strtok(NULL," ");
+        }
       }else if(cmp(input,"file")){
 	numbers = getFileVec();
+        for(int i = 0; i < numbers->size(); ++i){ //add values to the tree
+	  tree->addNode(new Node((*numbers)[i]));
+        }
       }
-      for(int i = 0; i < numbers->size(); ++i){ //add values to the tree
-	tree->addNode(new Node((*numbers)[i]));
-      }
-      
     }else if(cmp(input,"search")){ //search for nodes in tree
       cout << "What number would you like to search for?" << endl;
       cout << "Enter numbers one at a time." << endl;
